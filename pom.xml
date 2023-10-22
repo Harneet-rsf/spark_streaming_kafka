@@ -1,0 +1,141 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.data.spark</groupId>
+  <artifactId>spark_streaming_kafka</artifactId>
+  <version>1.0</version>
+  
+  <name>spark_streaming_kafka</name>
+  <description>Spark Kafka Consumer</description>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <encoding>UTF-8</encoding>
+    <scala.version>2.11.8</scala.version>
+    <scala.compat.version>2.11</scala.compat.version>
+	<scala.spark.version>2.11</scala.spark.version>
+	<spark.version>2.2.1</spark.version>
+	<config.version>1.2.0</config.version>
+	<mysql.version>5.1.38</mysql.version>
+  </properties>
+  
+  <dependencies>
+  	<!-- Spark -->
+	<dependency>
+		<groupId>org.apache.spark</groupId>
+		<artifactId>spark-core_${scala.spark.version}</artifactId>
+		<version>${spark.version}</version>
+		<scope>provided</scope>
+	</dependency>
+
+	<dependency>
+		<groupId>org.apache.spark</groupId>
+		<artifactId>spark-sql_${scala.spark.version}</artifactId>
+		<version>${spark.version}</version>
+		<scope>provided</scope>
+	</dependency>
+
+	<dependency>
+		<groupId>org.apache.spark</groupId>
+		<artifactId>spark-hive_${scala.spark.version}</artifactId>
+		<version>${spark.version}</version>
+		<scope>provided</scope>
+	</dependency>
+
+	<dependency>
+		<groupId>org.apache.spark</groupId>
+		<artifactId>spark-mllib_${scala.spark.version}</artifactId>
+		<version>${spark.version}</version>
+		<scope>provided</scope>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/com.databricks/spark-csv -->
+	<dependency>
+	    <groupId>com.databricks</groupId>
+	    <artifactId>spark-csv_${scala.spark.version}</artifactId>
+	    <version>1.5.0</version>
+	</dependency>
+	
+	<!-- Kafka Spark Streaming -->
+	<dependency>
+    	<groupId>org.apache.spark</groupId>
+    	<artifactId>spark-streaming-kafka-0-10_${scala.spark.version}</artifactId>
+    	<version>${spark.version}</version>
+    </dependency>
+    
+    <dependency>
+    	<groupId>org.apache.spark</groupId>
+    	<artifactId>spark-sql-kafka-0-10_${scala.spark.version}</artifactId>
+    	<version>${spark.version}</version>
+    </dependency>
+ 
+       <dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<version>5.1.31</version>
+	</dependency>
+	<!-- TypeSafe -->
+	<dependency>
+		<groupId>com.typesafe</groupId>
+		<artifactId>config</artifactId>
+		<version>${config.version}</version>
+	</dependency>
+  
+  	<!-- Junit Libraries -->	
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+    
+  </dependencies>
+  
+  <build>
+  	<finalName>${project.artifactId}</finalName>
+  	<plugins>
+  		<plugin>
+  			<artifactId>maven-compiler-plugin</artifactId>
+  			<version>3.7.0</version>
+  			<configuration>
+  				<source>${maven.compiler.source}</source>
+  				<target>${maven.compiler.target}</target>
+  			</configuration>
+  		</plugin>
+  		<plugin>
+			<groupId>org.scala-tools</groupId>
+			<artifactId>
+				maven-scala-plugin
+			</artifactId>
+		</plugin>
+		<plugin>
+			<artifactId>maven-assembly-plugin</artifactId>
+			<version>3.0.0</version>
+			<configuration>
+				<!-- get all project dependencies -->
+				<descriptorRefs>
+					<descriptorRef>jar-with-dependencies</descriptorRef>
+				</descriptorRefs>
+				<!-- MainClass in mainfest make a executable jar -->
+				<archive>
+					<manifest>
+						<mainClass>org.data.spark.KafkaConsumer</mainClass>
+					</manifest>
+				</archive>
+
+			</configuration>
+			<executions>
+				<execution>
+					<id>make-assembly</id>
+					<!-- bind to the packaging phase -->
+					<phase>package</phase>
+					<goals>
+						<goal>single</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+  	</plugins>
+  </build>
+</project>
